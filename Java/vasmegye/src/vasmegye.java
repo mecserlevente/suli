@@ -1,8 +1,6 @@
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class vasmegye {
     public static class adatok {
@@ -11,7 +9,7 @@ public class vasmegye {
         int honap;
         int nap;
         int megkulonbozteto;
-        int[] fullid; //a k kiszámítása miatt
+        int[] fullid;
 
         public adatok(int nem, int ev, int honap, int nap, int megkulonbozteto, int[] fullid) {
             this.nem = nem;
@@ -24,56 +22,41 @@ public class vasmegye {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<adatok> lista = new ArrayList<adatok>();
+        ArrayList<adatok> lista = new ArrayList<>();
         Scanner fileinput = new Scanner(new File("vas.txt"));
+        String ev = "";
         while (fileinput.hasNextLine()) {
             String data = fileinput.nextLine();
-            System.out.println(data);
             String temp[] = data.split("-");
             char[] fullidhez = data.replace("-", "").toCharArray();
             int idtmep[] = new int[11];
-            boolean szame = Pattern.matches("[0-9]+", temp[0]); //a forrássban az első sorával valami hiba van, ezért regex-el le kellett kezelni
-            if (szame) {
-                for (int i = 0; i < 11; i++) {
-                    idtmep[i] = Integer.parseInt(String.valueOf(fullidhez[i]));
-                }
-                if (Integer.parseInt(temp[0]) < 3) {
-                    String ev = "19" + temp[1].substring(0, 2);
-                    lista.add(new adatok(Integer.parseInt(temp[0]),
-                            Integer.parseInt(ev),
-                            Integer.parseInt(temp[1].substring(2, 4)),
-                            Integer.parseInt(temp[1].substring(4, 6)),
-                            Integer.parseInt(temp[2]),
-                            idtmep
-                    ));
-                } else {
-                    String ev = "20" + temp[1].substring(0, 2);
-                    lista.add(new adatok(Integer.parseInt(temp[0]),
-                            Integer.parseInt(ev),
-                            Integer.parseInt(temp[1].substring(2, 4)),
-                            Integer.parseInt(temp[1].substring(4, 6)),
-                            Integer.parseInt(temp[2]),
-                            idtmep
-                    ));
-                }
-
+            for (int i = 0; i < 11; i++) {
+                idtmep[i] = Integer.parseInt(String.valueOf(fullidhez[i]));
             }
+            if (Integer.parseInt(temp[0]) < 3) {
+                ev = "19" + temp[1].substring(0, 2);
+            } else {
+                ev = "20" + temp[1].substring(0, 2);
+            }
+            lista.add(new adatok(Integer.parseInt(temp[0]), //nem
+                    Integer.parseInt(ev), //ev
+                    Integer.parseInt(temp[1].substring(2, 4)),  //honap
+                    Integer.parseInt(temp[1].substring(4, 6)),  //nap
+                    Integer.parseInt(temp[2]),  //megkulonbozteto
+                    idtmep  //fullid
+            ));
         }
         fileinput.close();
-        System.out.println();
         System.out.println("2. feladat: " + lista.size() + " adat beolvasva");
         System.out.println("4.feladat: Ellenőrzés");
-        Vector<Integer> hibasak = new Vector<>();
+
         for (int i = 0; i < lista.size(); i++) {
             if (CdvEll(lista.get(i).fullid) == false) {
                 String tempev = "" + lista.get(i).fullid[1] + lista.get(i).fullid[2] + lista.get(i).fullid[3] + lista.get(i).fullid[4]
-                        + lista.get(i).fullid[5] + lista.get(i).fullid[6];
+                        + lista.get(i).fullid[5] + lista.get(i).fullid[6]; // a kiiratás formázásához
                 System.out.println("        Hibás a " + lista.get(i).fullid[0] + "-" + tempev + "-" + lista.get(i).megkulonbozteto + " személyi azonosító!");
-                hibasak.add(i);
+                lista.remove(i);
             }
-        }
-        for (int i = 0; i < hibasak.size(); i++) {
-            lista.remove(lista.get(hibasak.get(i)));
         }
 
         System.out.println("5. feladat: Vas megyében a vizsgált évek alatt " + lista.size() + " csecsemő született.");
@@ -99,9 +82,9 @@ public class vasmegye {
 
     public static boolean CdvEll(int[] id) {
         int k = id[10];
-        int summa = ((id[0] * 10) + (id[1] * 9) + (id[2] * 8) + (id[3] * 7) + (id[4] * 6) + (id[5] * 5) + (id[6] * 4) + (id[7] * 3) + (id[8] * 2) + (id[9] * 1));
+        int sum = ((id[0] * 10) + (id[1] * 9) + (id[2] * 8) + (id[3] * 7) + (id[4] * 6) + (id[5] * 5) + (id[6] * 4) + (id[7] * 3) + (id[8] * 2) + (id[9] * 1));
         boolean result = true;
-        if (summa % 11 == k) {
+        if (sum % 11 == k) {
             result = true;
         } else {
             result = false;
