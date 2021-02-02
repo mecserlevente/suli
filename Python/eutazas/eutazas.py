@@ -5,17 +5,11 @@ file=open("utasadat.txt")
 adatok=[line.rstrip('\n') for line in file]
  
 print("2. feladat")
-#utasszám -> beolvasott sorok száma -> adatok listában elemek száma
 print("A buszra "+str(len(adatok))+" utas akart felszállni.")
  
-
- 
- 
 print("3. feladat")
-# elutasítások száma
  
-
-elut=0 # elutasítások száma
+elut=0
  
 for i in range(0, len(adatok)):
     sordb=adatok[i].split(' ')
