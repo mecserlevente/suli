@@ -47,10 +47,24 @@ def feladat345():
             print("Nem volt hiányzó")
 
 
+def feladat6():
+    with open('osszesites.csv','w') as file:
+
+        stat = {}
+        for tanulok in lista:
+            osztaly = tanulok.osztaly
+            stat[osztaly] = stat.get(osztaly, 0) + 1
+
+        for tanulok, db in stat.items():
+            file.write(f"{osztaly};{db}\n")
+    file.close()
+
+
 def main():
     feladat1()
     feladat2()
     feladat345()
+    feladat6()
 
 
 if __name__ == '__main__':
