@@ -126,11 +126,11 @@ public class Haromszogek extends javax.swing.JFrame {
         private int sorszam;
 
         public DHaromszog(String sor, int sorSzáma) {
-            var oldalak = sor.replace(',', '.').split(" ");
+            String[] oldalak = sor.replace(',', '.').split(" ");
 
-            var beAoldal = Double.parseDouble(oldalak[0]);
-            var beBoldal = Double.parseDouble(oldalak[1]);
-            var beColdal = Double.parseDouble(oldalak[2]);
+            String beAoldal = Double.parseDouble(oldalak[0]);
+            String beBoldal = Double.parseDouble(oldalak[1]);
+            String beColdal = Double.parseDouble(oldalak[2]);
 
             setaOldal(beAoldal);
             setbOldal(beBoldal);
