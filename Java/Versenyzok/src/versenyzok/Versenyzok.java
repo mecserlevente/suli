@@ -16,9 +16,9 @@ public class Versenyzok {
         String nev;
         LocalDate szulido;
         String nemzetiseg;
-        String rajtszam;
+        int rajtszam;
 
-        public adatok(String nev, LocalDate szulido, String nemzetiseg, String rajtszam) {
+        public adatok(String nev, LocalDate szulido, String nemzetiseg, int rajtszam) {
             this.nev = nev;
             this.szulido = szulido;
             this.nemzetiseg = nemzetiseg;
@@ -33,13 +33,15 @@ public class Versenyzok {
         String elsosor = fileinput.nextLine();
         while (fileinput.hasNextLine()) {
             String data = fileinput.nextLine();
-            String temp[] = data.split(";");
+            String temp[] = data.split(";", -1);
             String ido[] = temp[1].split("\\.");
-
-            String rajtszam = data.substring(data.length() - 2, data.length()).replace(";", "").replaceAll("[A-Za-z]", "15000"); //nemjutott jobb megoldás eszembe:-(
-
-            lista.add(new adatok(temp[0], LocalDate.of(Integer.parseInt(ido[0]), Integer.parseInt(ido[1]),
-                    Integer.parseInt(ido[2])), temp[2], rajtszam.replace(" ", "15000")));
+            if (temp[3].isEmpty()) {
+                lista.add(new adatok(temp[0], LocalDate.of(Integer.parseInt(ido[0]), Integer.parseInt(ido[1]),
+                        Integer.parseInt(ido[2])), temp[2], 15000));
+            } else {
+                lista.add(new adatok(temp[0], LocalDate.of(Integer.parseInt(ido[0]), Integer.parseInt(ido[1]),
+                        Integer.parseInt(ido[2])), temp[2], Integer.parseInt(temp[3])));
+            }
 
         }
         System.out.println("3. feladat: " + lista.size());
@@ -57,9 +59,9 @@ public class Versenyzok {
         int min = Integer.MAX_VALUE;
         int minhely = 0;
         for (int i = 0; i < lista.size(); i++) {
-            if (!lista.get(i).rajtszam.equals("-") || (!lista.get(i).rajtszam.equals(" "))) {
-                if (Integer.parseInt(lista.get(i).rajtszam) < min) {
-                    min = Integer.parseInt(lista.get(i).rajtszam);
+            if (lista.get(i).rajtszam != 15000) {
+                if (lista.get(i).rajtszam < min) {
+                    min = lista.get(i).rajtszam;
                     minhely = i;
                 }
             }
@@ -67,26 +69,25 @@ public class Versenyzok {
         System.out.println("6. feladat: " + lista.get(minhely).nemzetiseg);
         //STREAM-API megoldás
         int min1 = lista.stream()
-                .filter(k -> !k.rajtszam.equals("-") || !k.rajtszam.equals(" "))
-                .mapToInt(k -> Integer.parseInt(k.rajtszam))
+                .filter(k -> k.rajtszam != 15000)
+                .mapToInt(k -> k.rajtszam)
                 .min()
                 .getAsInt();
         lista.stream()
-                .filter(k -> k.rajtszam.equals(Integer.toString(min1)))
+                .filter(k -> k.rajtszam == min1)
                 .findFirst()
                 .ifPresent(k -> System.out.println("6. feladat: " + k.nemzetiseg));
 
         ArrayList<Integer> rajtszamokhoz = new ArrayList<>();
         for (int i = 0; i < lista.size(); i++) {
-            if (!lista.get(i).rajtszam.equals("-") || (!lista.get(i).rajtszam.equals(" "))) {
-                rajtszamokhoz.add(Integer.parseInt(lista.get(i).rajtszam));
+            if (lista.get(i).rajtszam != 15000) {
+                rajtszamokhoz.add(lista.get(i).rajtszam);
             }
         }
         List<Integer> rajtsz = rajtszamokhoz.stream()
                 .filter(k -> Collections.frequency(rajtszamokhoz, k) > 1)
                 .distinct()
                 .collect(Collectors.toList());
-        rajtsz.remove(0);
         System.out.println("7. feladat: " + rajtsz);
     }
 
