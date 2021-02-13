@@ -37,7 +37,7 @@ public class Versenyzok {
             String ido[] = temp[1].split("\\.");
             if (temp[3].isEmpty()) {
                 lista.add(new adatok(temp[0], LocalDate.of(Integer.parseInt(ido[0]), Integer.parseInt(ido[1]),
-                        Integer.parseInt(ido[2])), temp[2], 15000));
+                        Integer.parseInt(ido[2])), temp[2], 15000));  //15000 tuti nemlesz senkinek a rajtszáma, ideiglenes érték
             } else {
                 lista.add(new adatok(temp[0], LocalDate.of(Integer.parseInt(ido[0]), Integer.parseInt(ido[1]),
                         Integer.parseInt(ido[2])), temp[2], Integer.parseInt(temp[3])));
