@@ -49,30 +49,32 @@ public class Fuvar {
 		
 		System.out.println("3. feladat: "+lista.size()+" fuvar");
 		Long utazasdb=lista.stream()
-								  .filter(k -> k.id==6185)
-								  .distinct()
-								  .count();
+					.filter(k -> k.id==6185)
+					.distinct()
+					.count();
 		
 		double bevetelfizetes=lista.stream()
-								 .filter(k -> k.id==6185)
-								 .mapToDouble(k -> k.vitelidij).sum();
+						.filter(k -> k.id==6185)
+						.mapToDouble(k -> k.vitelidij)
+						.sum();
 		
 		double bevetelborravalo=lista.stream()
 				 .filter(k -> k.id==6185)
-				 .mapToDouble(k -> k.borravalo).sum();
+				 .mapToDouble(k -> k.borravalo)
+				 .sum();
 		
 		System.out.println("4. feladat: "+utazasdb+" fuvar alatt: "+(bevetelborravalo+bevetelfizetes)+"$");
 		
 		System.out.println("5. feladat: ");
 		lista.stream()
-					.collect(Collectors.groupingBy(k -> k.fizetesimod, Collectors.counting()))
-					.entrySet()
-					.stream()
-					.forEach(k -> System.out.println(k.getKey()+": "+k.getValue()+" fuvar"));
+			.collect(Collectors.groupingBy(k -> k.fizetesimod, Collectors.counting()))
+			.entrySet()
+			.stream()
+			.forEach(k -> System.out.println(k.getKey()+": "+k.getValue()+" fuvar"));
 		
 		double osszesmerfold=lista.stream()
-								.mapToDouble(k ->k.tavolsag)
-								.sum();
+						.mapToDouble(k ->k.tavolsag)
+						.sum();
 		DecimalFormat df=new DecimalFormat("0.00");
 		System.out.println("6. feladat: "+df.format(osszesmerfold*1.6)+"km");
 		
@@ -86,10 +88,10 @@ public class Fuvar {
 		}
 		
 		System.out.println("7. feladat: Leghosszabb fuvar:");
-		System.out.println("Fuvar hossza: "+lista.get(leghosszabbhely).idotartam+" másodperc");
-		System.out.println("Taxi azonosító: "+lista.get(leghosszabbhely).id);
-		System.out.println("Megtett távolság: "+lista.get(leghosszabbhely).tavolsag+" km");
-		System.out.println("Viteli díj: "+lista.get(leghosszabbhely).vitelidij+"$");
+		System.out.println("Fuvar hossza: "+lista.get(leghosszabbhely).idotartam+" mÃ¡sodperc");
+		System.out.println("Taxi azonosÃ­tÃ³: "+lista.get(leghosszabbhely).id);
+		System.out.println("Megtett tÃ¡volsÃ¡g: "+lista.get(leghosszabbhely).tavolsag+" km");
+		System.out.println("Viteli dÃ­j: "+lista.get(leghosszabbhely).vitelidij+"$");
 		
 		PrintWriter pr=new PrintWriter(new FileWriter("hibak.txt"));
 		pr.print(elsosor+"\n");
@@ -105,4 +107,4 @@ public class Fuvar {
 		System.out.println("8. feladat: hibak.txt");
 	}
 
-}
+  }
